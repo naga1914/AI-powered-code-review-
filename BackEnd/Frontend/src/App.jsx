@@ -21,7 +21,7 @@ function App() {
 
   async function reviewCode() {
     // Use the API URL from environment variable
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
     // Send the request to the backend
     const response = await axios.post(`${apiUrl}/ai/get-review`, { code });
