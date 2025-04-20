@@ -76,7 +76,7 @@ And it's just the beginning.
 
 ```bash
 # Clone the repo
-git clone https://github.com/yourusername/ai-code-reviewer
+git clone https://github.com/naga1914/AI-powered-code-review-
 
 # Client Setup
 cd Frontend
