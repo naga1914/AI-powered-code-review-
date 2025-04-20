@@ -1,5 +1,11 @@
 require('dotenv').config()
 const app = require('./src/app')
+const cors = require('cors');
+
+app.use(cors({
+  origin: 'https://your-frontend.vercel.app', // OR '*' during dev/testing
+  credentials: true,
+}));
 
 
 

@@ -1,3 +1,4 @@
+// Main.jsx
 import { useState, useEffect } from 'react'
 import Editor from "react-simple-code-editor"
 import prism from "prismjs"
@@ -19,8 +20,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHistory, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { faSpinner, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { faTools } from '@fortawesome/free-solid-svg-icons';
-
-
 
 const Main = () => {
   const [code, setCode] = useState(`function sum() {\n  return 1 + 1\n}`)
@@ -49,7 +48,7 @@ const Main = () => {
     setLoading(true)
     setFixedCode("")
     try {
-      const response = await axios.post('http://localhost:3000/ai/get-review', { code, language })
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/ai/get-review`, { code, language })
       const newReview = {
         id: uuidv4(),
         language,
@@ -70,7 +69,7 @@ const Main = () => {
   async function fixCode() {
     setFixing(true)
     try {
-      const response = await axios.post("http://localhost:3000/ai/fix-code", { code, language })
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/ai/fix-code`, { code, language })
       setFixedCode(response.data)
     } catch (error) {
       setFixedCode("Error fixing code. Try again later.")
@@ -148,13 +147,13 @@ const Main = () => {
         <div className="right">
           {loading ? (
             <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
-          >
-            <FontAwesomeIcon icon={faSpinner} spin style={{ marginRight: '8px' }} />
-            Reviewing code...
-          </motion.p>
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              <FontAwesomeIcon icon={faSpinner} spin style={{ marginRight: '8px' }} />
+              Reviewing code...
+            </motion.p>
           ) : (
             <motion.div
               initial={{ opacity: 0 }}
@@ -168,14 +167,14 @@ const Main = () => {
           )}
 
           {fixing ? (
-              <p>
+            <p>
               <FontAwesomeIcon icon={faTools} style={{ marginRight: '8px', color: '#f97316' }} />
               Fixing code...
             </p>
           ) : fixedCode && (
             <div className="fixed-code">
               <h3>
-              <FontAwesomeIcon icon={faCheckCircle} style={{ marginRight: '8px', color: 'green' }} />
+                <FontAwesomeIcon icon={faCheckCircle} style={{ marginRight: '8px', color: 'green' }} />
                 Fixed Code
               </h3>
               <Editor
