@@ -1,7 +1,6 @@
 const express = require('express');
 const aiRoutes = require('./routes/ai.routes')
 const cors = require('cors')
-require('dotenv').config();
 
 
 const app = express()
