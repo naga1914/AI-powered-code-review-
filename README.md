@@ -23,10 +23,10 @@ An assistant that doesn't just throw red lines at your face, but tries to **expl
 
 ##  Key Features
 
-- ** Authentication with Clerk**  
+-  Authentication with Clerk  
   Smooth, secure login and signup experience.
 
-- ** Home +  Main Pages**  
+-  Home +  Main Pages  
   - Home: A minimal intro screen.  
   - Main: Where real dev magic happens.
 
@@ -72,11 +72,11 @@ And it's just the beginning.
 git clone https://github.com/yourusername/ai-code-reviewer
 
 # Client Setup
-cd client
-npm install
-npm start
-
-# Server Setup
-cd ../server
+cd Frontend
 npm install
 npm run dev
+
+# Server Setup
+cd ../BackEnd
+npm install
+node server.js
