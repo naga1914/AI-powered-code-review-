@@ -3,7 +3,7 @@ const app = require('./src/app')
 const cors = require('cors');
 
 app.use(cors({
-  origin: 'https://your-frontend.vercel.app', // OR '*' during dev/testing
+  origin: 'https://ai-powered-code-reviewer-xi.vercel.app/', // OR '*' during dev/testing
   credentials: true,
 }));
 
