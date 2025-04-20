@@ -30,7 +30,7 @@ An assistant that doesn't just throw red lines at your face, but tries to **expl
   - Home: A minimal intro screen.  
   - Main: Where real dev magic happens.
 
-- AI-Powered Code Fix & Review
+- AI-Powered Code Fix & Review  
   Drop in your code. Choose a language. Let the AI explain and refine it.
 
 - Light / Dark Mode Toggle  
@@ -42,8 +42,15 @@ An assistant that doesn't just throw red lines at your face, but tries to **expl
 - Share |  Delete |  Archive  
   Manage your code insights like a pro.
 
-- Multi-Language Support 
+- Multi-Language Support  
   From JS to Python (and more coming) — choose your syntax, get your fix.
+
+- ✨ **Google Gemini 2.0 Flash API**  
+  Leveraging cutting-edge AI to deeply understand, review, and refactor code with speed and accuracy.
+
+- 🌐 **Backend Endpoints**  
+  - `POST /api/get-review` — AI returns review insights and improvements  
+  - `POST /api/fix-code` — AI suggests a cleaned, corrected version of your code  
 
 ##  Tech Stack & Tools
 
@@ -51,7 +58,7 @@ An assistant that doesn't just throw red lines at your face, but tries to **expl
 - **Backend**: Node.js + Express  
 - **Database**: MongoDB with Mongoose  
 - **Auth**: Clerk.dev  
-- **AI**: OpenAI API  
+- **AI**: OpenAI API & Google Gemini 2.0 Flash  
 - **Vibes**: Clean UI, smooth animations, real-time feedback
 
 ##  Why This Project is Different
@@ -80,3 +87,4 @@ npm run dev
 cd ../BackEnd
 npm install
 node server.js
+
