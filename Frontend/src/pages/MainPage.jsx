@@ -44,40 +44,6 @@ const Main = () => {
     localStorage.setItem("reviewHistory", JSON.stringify(reviewHistory))
   }, [reviewHistory])
 
-  async function reviewCode() {
-    setLoading(true)
-    setFixedCode("")
-    try {
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/ai/get-review`, { code, language })
-      const newReview = {
-        id: uuidv4(),
-        language,
-        code,
-        feedback: response.data,
-        timestamp: new Date().toLocaleString()
-      }
-      setReview(response.data)
-      setReviewHistory(prev => [newReview, ...prev])
-    } catch (error) {
-      setReview("Error getting feedback. Check your server.")
-      console.error(error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  async function fixCode() {
-    setFixing(true)
-    try {
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/ai/fix-code`, { code, language })
-      setFixedCode(response.data)
-    } catch (error) {
-      setFixedCode("Error fixing code. Try again later.")
-      console.error(error)
-    } finally {
-      setFixing(false)
-    }
-  }
 
   const filteredHistory = reviewHistory.filter(item =>
     item.code.toLowerCase().includes(searchQuery.toLowerCase())
