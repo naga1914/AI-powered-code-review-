@@ -30,19 +30,19 @@ An assistant that doesn't just throw red lines at your face, but tries to **expl
   - Home: A minimal intro screen.  
   - Main: Where real dev magic happens.
 
-- ** AI-Powered Code Fix & Review**  
+- AI-Powered Code Fix & Review
   Drop in your code. Choose a language. Let the AI explain and refine it.
 
-- ** Light / Dark Mode Toggle**  
+- Light / Dark Mode Toggle  
   Because we code at 2 PM… and 2 AM.
 
-- ** History Storage**  
+- History Storage  
   Every review, saved — your learning journey, recorded.
 
-- ** Share |  Delete |  Archive**  
+- Share |  Delete |  Archive  
   Manage your code insights like a pro.
 
-- ** Multi-Language Support**  
+- Multi-Language Support 
   From JS to Python (and more coming) — choose your syntax, get your fix.
 
 ##  Tech Stack & Tools
