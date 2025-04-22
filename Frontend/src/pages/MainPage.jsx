@@ -40,6 +40,17 @@ const Main = () => {
     prism.highlightAll()
   }, [language])
 
+
+  async function reviewCode() {
+    const response = await axios.post('http://localhost:3000/ai/get-review', { code })
+    setReview(response.data)
+  }
+
+  async function fixCode() {
+    const response = await axios.post('http://localhost:3000/ai/fix-code', { code })
+    setReview(response.data)
+  }
+
   useEffect(() => {
     localStorage.setItem("reviewHistory", JSON.stringify(reviewHistory))
   }, [reviewHistory])
