@@ -173,47 +173,22 @@ node server.js
 
 ### Home Page
 
-```md
+<img width="1919" height="873" alt="Screenshot 2026-06-03 182717" src="https://github.com/user-attachments/assets/cfac0f36-a3d3-40f7-a7fe-5f7f26872c3a" />
+<img width="1884" height="857" alt="Screenshot 2026-06-03 182808" src="https://github.com/user-attachments/assets/eb669a7a-b667-4b66-b05b-0fd9f8645409" /
 
-```
 
 ### AI Review Feature
 
-```md
-![AI Review](./screenshots/review.png)
-```
+<img width="1884" height="857" alt="Screenshot 2026-06-03 182808" src="https://github.com/user-attachments/assets/325989f3-b1cc-4fc8-995c-e88eca4ecdf5" />
 
 ### Fixed Code Output
 
-```md
-![Fixed Code](./screenshots/fixed-code.png)
-```
+<img width="863" height="712" alt="Screenshot 2026-06-03 182842" src="https://github.com/user-attachments/assets/50112427-20d3-446e-baaa-f6f078054471" />
+
 
 ### Chat History
 
-```md
-![History](./screenshots/history.png)
-```
-
----
-
-## Demo Video
-
-Upload your demo video to YouTube and add:
-
-```md
-## Demo Video
-
-[Watch Demo](https://youtube.com/watch?v=YOUR_VIDEO_ID)
-```
-
-Or upload an MP4 inside GitHub:
-
-```md
-## Demo Video
-
-https://github.com/user-attachments/assets/your-video-link
-```
+<img width="1091" height="846" alt="Screenshot 2026-06-03 182927" src="https://github.com/user-attachments/assets/8419c82e-5870-4c06-9e73-32ac9d9ee14c" />
 
 ---
 
