@@ -37,6 +37,7 @@ const Main = () => {
   })
   const [error, setError] = useState(null)
 
+  const API_URL = import.meta.env.Backend_URL || "http://localhost:3000";
   function getApiErrorMessage(err) {
     const data = err.response?.data
     if (typeof data === "object" && data?.message) return data.message
@@ -53,7 +54,7 @@ const Main = () => {
     setError(null)
     setLoading(true)
     try {
-      const response = await axios.post('http://localhost:3000/ai/get-review', { code })
+      const response = await axios.post(`${API_URL}/ai/get-review`, { code })
       setReview(response.data)
     } catch (err) {
       setReview("")
@@ -67,7 +68,7 @@ const Main = () => {
     setError(null)
     setFixing(true)
     try {
-      const response = await axios.post('http://localhost:3000/ai/fix-code', { code })
+      const response = await axios.post(`${API_URL}/ai/fix-code`, { code })
       setFixedCode(response.data)
     } catch (err) {
       setFixedCode("")
