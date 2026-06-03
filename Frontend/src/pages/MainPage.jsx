@@ -1,0 +1,276 @@
+// Main.jsx
+import { useState, useEffect } from 'react'
+import Editor from "react-simple-code-editor"
+import prism from "prismjs"
+import Markdown from "react-markdown"
+import rehypeHighlight from "rehype-highlight"
+import axios from 'axios'
+import { motion } from "framer-motion"
+import { v4 as uuidv4 } from "uuid"
+import Header from '../components/Navbar'
+import "prismjs/components/prism-python"
+import "prismjs/components/prism-java"
+import "prismjs/components/prism-c"
+import "prismjs/components/prism-cpp"
+import "prismjs/components/prism-typescript"
+import "highlight.js/styles/github-dark.css"
+import "prismjs/themes/prism-tomorrow.css"
+import "../App.css"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHistory, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faTools } from '@fortawesome/free-solid-svg-icons';
+
+const Main = () => {
+  const [code, setCode] = useState(`function sum() {\n  return 1 + 1\n}`)
+  const [review, setReview] = useState(``)
+  const [fixedCode, setFixedCode] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [fixing, setFixing] = useState(false)
+  const [darkMode, setDarkMode] = useState(true)
+  const [language, setLanguage] = useState("javascript")
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [reviewHistory, setReviewHistory] = useState(() => {
+    const saved = localStorage.getItem("reviewHistory")
+    return saved ? JSON.parse(saved) : []
+  })
+  const [error, setError] = useState(null)
+
+  function getApiErrorMessage(err) {
+    const data = err.response?.data
+    if (typeof data === "object" && data?.message) return data.message
+    if (typeof data === "string" && data.trim()) return data
+    return err.message || "Something went wrong. Please try again."
+  }
+
+  useEffect(() => {
+    prism.highlightAll()
+  }, [language])
+
+
+  async function reviewCode() {
+    setError(null)
+    setLoading(true)
+    try {
+      const response = await axios.post('http://localhost:3000/ai/get-review', { code })
+      setReview(response.data)
+    } catch (err) {
+      setReview("")
+      setError(getApiErrorMessage(err))
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function fixCode() {
+    setError(null)
+    setFixing(true)
+    try {
+      const response = await axios.post('http://localhost:3000/ai/fix-code', { code })
+      setFixedCode(response.data)
+    } catch (err) {
+      setFixedCode("")
+      setError(getApiErrorMessage(err))
+    } finally {
+      setFixing(false)
+    }
+  }
+
+  useEffect(() => {
+    localStorage.setItem("reviewHistory", JSON.stringify(reviewHistory))
+  }, [reviewHistory])
+
+
+  const filteredHistory = reviewHistory.filter(item =>
+    item.code.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
+  return (
+    <div className={darkMode ? "app dark" : "app light"}>
+      <Header
+        language={language}
+        setLanguage={setLanguage}
+        darkMode={darkMode}
+        setDarkMode={setDarkMode}
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+      />
+
+      <motion.main
+        initial={{ opacity: 0, x: sidebarOpen ? 250 : 0 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5 }}
+        className="main-content"
+      >
+        <div className="left">
+          <div className="code">
+            <Editor
+              value={code}
+              onValueChange={setCode}
+              highlight={code =>
+                prism.highlight(code, prism.languages[language] || prism.languages.javascript, language)
+              }
+              padding={10}
+              style={{
+                fontFamily: '"Fira code", "Fira Mono", monospace',
+                fontSize: 16,
+                border: "1px solid #ddd",
+                borderRadius: "5px",
+                height: "100%",
+                width: "100%",
+                backgroundColor: darkMode ? "#282c34" : "#f5f5f5",
+                color: darkMode ? "#fff" : "#000"
+              }}
+            />
+          </div>
+
+          <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+            <motion.div
+              className="review"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={reviewCode}
+            >
+              Review
+            </motion.div>
+
+            <motion.div
+              className="review"
+              style={{ backgroundColor: "#4caf50" }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={fixCode}
+            >
+              Fix Code
+            </motion.div>
+          </div>
+        </div>
+
+        <div className="right">
+          {error && (
+            <motion.div
+              className="api-error"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              role="alert"
+              style={{
+                padding: "12px 16px",
+                marginBottom: "12px",
+                borderRadius: "8px",
+                backgroundColor: darkMode ? "#3d1f1f" : "#fde8e8",
+                color: darkMode ? "#fca5a5" : "#991b1b",
+                border: "1px solid #ef4444",
+              }}
+            >
+              {error}
+            </motion.div>
+          )}
+          {loading ? (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              <FontAwesomeIcon icon={faSpinner} spin style={{ marginRight: '8px' }} />
+              Reviewing code...
+            </motion.p>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Markdown rehypePlugins={[rehypeHighlight]}>
+                {review}
+              </Markdown>
+            </motion.div>
+          )}
+
+          {fixing ? (
+            <p>
+              <FontAwesomeIcon icon={faTools} style={{ marginRight: '8px', color: '#f97316' }} />
+              Fixing code...
+            </p>
+          ) : fixedCode && (
+            <div className="fixed-code">
+              <h3>
+                <FontAwesomeIcon icon={faCheckCircle} style={{ marginRight: '8px', color: 'green' }} />
+                Fixed Code
+              </h3>
+              <Editor
+                value={fixedCode}
+                onValueChange={() => {}}
+                highlight={code => prism.highlight(code, prism.languages[language] || prism.languages.javascript, language)}
+                padding={10}
+                style={{
+                  fontFamily: '"Fira code", "Fira Mono", monospace',
+                  fontSize: 14,
+                  border: "1px solid #ddd",
+                  borderRadius: "5px",
+                  backgroundColor: darkMode ? "#1e1e1e" : "#f4f4f4",
+                  color: darkMode ? "#fff" : "#000",
+                  marginTop: "10px"
+                }}
+                readOnly
+              />
+            </div>
+          )}
+        </div>
+
+        {sidebarOpen && (
+          <motion.aside
+            className="sidebar"
+            initial={{ x: 250, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 250, opacity: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <h2><FontAwesomeIcon icon={faHistory} style={{ cursor: 'pointer' }} title="Open History" /> History</h2>
+              <button
+                onClick={() => setReviewHistory([])}
+                style={{ fontSize: "0.8rem", color: "#ccc", background: "transparent", border: "none", cursor: "pointer" }}
+              >
+                <FontAwesomeIcon icon={faTimes} style={{ cursor: 'pointer', color: 'red' }} title="Close History" /> Clear
+              </button>
+            </div>
+            <input
+              type="text"
+              placeholder="Search history"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="search-input"
+            />
+            <ul className="chat-history-list">
+              {filteredHistory.map((item) => (
+                <li
+                  key={item.id}
+                  onClick={() => {
+                    setCode(item.code)
+                    setLanguage(item.language)
+                    setReview(item.feedback)
+                  }}
+                >
+                  {item.language} - {item.timestamp.split(",")[0]}
+                </li>
+              ))}
+            </ul>
+            <button
+              onClick={() => {
+                setCode("")
+                setReview("")
+                setLanguage("javascript")
+              }}
+              style={{ marginTop: "15px" }}
+            >
+              New Chat
+            </button>
+          </motion.aside>
+        )}
+      </motion.main>
+    </div>
+  )
+}
+
+export default Main
